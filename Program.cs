@@ -4,6 +4,7 @@ using PetshopPeterson.Data;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
+    WebRootPath = "wwwroot",
     ContentRootPath = Directory.GetCurrentDirectory(),
     Args = args
 });
