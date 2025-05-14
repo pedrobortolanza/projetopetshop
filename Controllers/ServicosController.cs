@@ -33,31 +33,19 @@ namespace PetshopPeterson.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] string descricao, [FromForm] decimal valor, [FromForm] IFormFile imagem)
+        public async Task<IActionResult> Create([FromBody] Servico servico)
         {
-            if (string.IsNullOrEmpty(descricao) || imagem == null || valor <= 0)
-                return BadRequest("Campos inválidos.");
-
-            var pasta = Path.Combine(_env.WebRootPath, "imagens");
-            if (!Directory.Exists(pasta)) Directory.CreateDirectory(pasta);
-
-            var nomeArquivo = Guid.NewGuid() + Path.GetExtension(imagem.FileName);
-            var caminho = Path.Combine(pasta, nomeArquivo);
-
-            using var stream = new FileStream(caminho, FileMode.Create);
-            await imagem.CopyToAsync(stream);
-
-            var servico = new Servico
+            if (string.IsNullOrWhiteSpace(servico.Descricao) || servico.Valor <= 0 ||
+                string.IsNullOrWhiteSpace(servico.NomeCachorro) || string.IsNullOrWhiteSpace(servico.NomeTutor))
             {
-                Descricao = descricao,
-                Valor = valor,
-                Imagem = $"/imagens/{nomeArquivo}"
-            };
+                return BadRequest("Todos os campos são obrigatórios.");
+            }
 
             _context.Servico.Add(servico);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { id = servico.Id }, servico);
         }
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, Servico input)
@@ -65,12 +53,16 @@ namespace PetshopPeterson.Controllers
             var servico = await _context.Servico.FindAsync(id);
             if (servico == null) return NotFound();
 
+            servico.NomeCachorro = input.NomeCachorro;
+            servico.NomeTutor = input.NomeTutor;
             servico.Descricao = input.Descricao;
             servico.Valor = input.Valor;
+
             _context.Servico.Update(servico);
             await _context.SaveChangesAsync();
             return Ok(servico);
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
