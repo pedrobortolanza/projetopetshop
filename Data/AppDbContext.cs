@@ -15,6 +15,7 @@ namespace PetshopPeterson.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+        
             modelBuilder.Entity<Servico>()
                 .Property(m => m.Valor)
                 .HasPrecision(10, 2);
@@ -31,6 +32,25 @@ namespace PetshopPeterson.Data
                 .HasOne(pm => pm.Servico)
                 .WithMany()
                 .HasForeignKey(pm => pm.ServicoId);
+
+            modelBuilder.Entity<Servico>()
+                .HasOne(s => s.Tutor)
+                .WithMany(t => t.Servicos)
+                .HasForeignKey(s => s.TutorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Tutor removido de Agendamento
+            // modelBuilder.Entity<Agendamento>()
+            //     .HasOne(a => a.Tutor)
+            //     .WithMany(t => t.Agendamentos)
+            //     .HasForeignKey(a => a.TutorId)
+            //     .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Tutor>()
+                .HasOne(t => t.Logradouro)
+                .WithMany()
+                .HasForeignKey(t => t.LogradouroId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             base.OnModelCreating(modelBuilder);
         }

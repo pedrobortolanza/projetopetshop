@@ -2,7 +2,11 @@ namespace PetshopPeterson.DTOs
 {
     public class AgendamentoDTO
     {
-        public int TutorId { get; set; }
+        //tutor removido temporariamente
+        public string NomePet { get; set; } = string.Empty;
+        public string Data { get; set; } = string.Empty;
+        public string Hora { get; set; } = string.Empty;
+
         public List<ServicoDTO> AgendamentoServico { get; set; } = new();
     }
 

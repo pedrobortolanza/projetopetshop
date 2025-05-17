@@ -17,6 +17,13 @@ namespace PetshopPeterson.Controllers
             _context = context;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var tutores = await _context.Tutor.ToListAsync();
+            return Ok(tutores);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTutor(int id)
         {

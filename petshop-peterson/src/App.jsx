@@ -1,24 +1,22 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import CadastroServico from './pages/CadastroServico';
 import Header from './components/Header';
-import Footer from './components/Footer';
+import Home from './pages/Home'; 
+import CadastroServico from './pages/CadastroServico';
+import CadastroTutor from './pages/CadastroTutor';
+import Agendamento from './pages/Agendamento';
+import ListaAgendamentos from './pages/ListaAgendamentos';
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-grow p-6">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/cadastrar-servico" element={<CadastroServico />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} /> 
+        <Route path="/api/servicos" element={<CadastroServico />} />
+        <Route path="/api/tutores" element={<CadastroTutor />} />
+        <Route path="/api/agendamentos/novo" element={<Agendamento />} />
+        <Route path="/api/agendamentos" element={<ListaAgendamentos />} />
+      </Routes>
     </Router>
   );
 }

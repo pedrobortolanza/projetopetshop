@@ -1,37 +1,47 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function CadastroServico() {
-  const [nomeCachorro, setNomeCachorro] = useState('');
-  const [nomeTutor, setNomeTutor] = useState('');
+  const [tutores, setTutores] = useState([]);
+  const [tutorId, setTutorId] = useState('');
   const [descricao, setDescricao] = useState('');
   const [valor, setValor] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    axios.get('http://localhost:5294/api/tutores')
+      .then(res => setTutores(res.data))
+      .catch(() => alert('Erro ao carregar tutores.'));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     const dados = {
-      nomeCachorro,
-      nomeTutor,
+      tutorId: parseInt(tutorId),
       descricao,
-      valor: parseFloat(valor),
+      valor: parseFloat(valor)
     };
 
     try {
       await axios.post('http://localhost:5294/api/servicos', dados);
       alert('Serviço cadastrado com sucesso! 🎉');
-      setNomeCachorro('');
-      setNomeTutor('');
+      setTutorId('');
       setDescricao('');
       setValor('');
     } catch (error) {
-      console.error(error);
-      alert('Erro ao cadastrar serviço ❌');
-    } finally {
-      setLoading(false);
-    }
+  if (error.response) {
+    console.error("Erro na resposta da API:", error.response.data);
+    alert(`Erro ao cadastrar serviço: ${error.response.data?.message || JSON.stringify(error.response.data)}`);
+  } else if (error.request) {
+    console.error("Sem resposta da API:", error.request);
+    alert("A API não respondeu.");
+  } else {
+    console.error("Erro na configuração:", error.message);
+    alert("Erro desconhecido ao cadastrar serviço.");
+  }
+}
   };
 
   return (
@@ -43,32 +53,27 @@ function CadastroServico() {
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label className="block font-medium mb-1 text-gray-700">🐶 Nome do Cachorro</label>
-          <input
-            type="text"
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
-            value={nomeCachorro}
-            onChange={(e) => setNomeCachorro(e.target.value)}
+          <label className="block font-medium mb-1 text-gray-700">👨‍👩‍👧 Selecionar Tutor</label>
+          <select
+            className="w-full border border-gray-300 rounded-lg px-4 py-2"
+            value={tutorId}
+            onChange={(e) => setTutorId(e.target.value)}
             required
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1 text-gray-700">👨‍👩‍👧 Nome do Tutor</label>
-          <input
-            type="text"
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
-            value={nomeTutor}
-            onChange={(e) => setNomeTutor(e.target.value)}
-            required
-          />
+          >
+            <option value="">Selecione um tutor...</option>
+            {tutores.map((tutor) => (
+              <option key={tutor.id} value={tutor.id}>
+                {tutor.nome} - {tutor.email}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
           <label className="block font-medium mb-1 text-gray-700">📋 Descrição do Serviço</label>
           <input
             type="text"
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2"
             placeholder="Ex: Banho, Tosa, Vacinação..."
             value={descricao}
             onChange={(e) => setDescricao(e.target.value)}
@@ -81,7 +86,7 @@ function CadastroServico() {
           <input
             type="number"
             step="0.01"
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2"
             placeholder="Ex: 79.90"
             value={valor}
             onChange={(e) => setValor(e.target.value)}
@@ -93,9 +98,7 @@ function CadastroServico() {
           type="submit"
           disabled={loading}
           className={`w-full text-white font-bold py-3 px-4 rounded-lg transition duration-200 ${
-            loading
-              ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-red-600 hover:bg-red-700'
+            loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700'
           }`}
         >
           {loading ? 'Cadastrando...' : 'Cadastrar Serviço'}

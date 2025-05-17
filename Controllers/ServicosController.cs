@@ -35,11 +35,12 @@ namespace PetshopPeterson.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Servico servico)
         {
-            if (string.IsNullOrWhiteSpace(servico.Descricao) || servico.Valor <= 0 ||
-                string.IsNullOrWhiteSpace(servico.NomeCachorro) || string.IsNullOrWhiteSpace(servico.NomeTutor))
-            {
-                return BadRequest("Todos os campos são obrigatórios.");
-            }
+            if (string.IsNullOrWhiteSpace(servico.Descricao) || servico.Valor <= 0)
+                return BadRequest("Descrição e valor são obrigatórios.");
+
+            var tutor = await _context.Tutor.FindAsync(servico.TutorId);
+            if (tutor == null)
+                return NotFound("Tutor não encontrado.");
 
             _context.Servico.Add(servico);
             await _context.SaveChangesAsync();
@@ -51,17 +52,20 @@ namespace PetshopPeterson.Controllers
         public async Task<IActionResult> Update(int id, Servico input)
         {
             var servico = await _context.Servico.FindAsync(id);
-            if (servico == null) return NotFound();
+            if (servico == null) return NotFound("Serviço não encontrado.");
 
-            servico.NomeCachorro = input.NomeCachorro;
-            servico.NomeTutor = input.NomeTutor;
+            var tutor = await _context.Tutor.FindAsync(input.TutorId);
+            if (tutor == null) return NotFound("Tutor informado não existe.");
+
             servico.Descricao = input.Descricao;
             servico.Valor = input.Valor;
+            servico.TutorId = input.TutorId;
 
             _context.Servico.Update(servico);
             await _context.SaveChangesAsync();
             return Ok(servico);
         }
+
 
 
         [HttpDelete("{id}")]
