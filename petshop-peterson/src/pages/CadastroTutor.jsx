@@ -20,7 +20,7 @@ function CadastroTutor() {
 
       await axios.put(`http://localhost:5294/api/logradouros/${tutorRes.data.id}`, logradouro);
 
-      alert('Tutor cadastrado com sucesso!');
+      toast.sucess('Tutor cadastrado com sucesso!');
       setNome('');
       setEmail('');
       setSenha('');
@@ -28,7 +28,7 @@ function CadastroTutor() {
       setLogradouro({ cep: '', rua: '', numero: '', complemento: '' });
     } catch (err) {
       console.error(err);
-      alert('Erro ao cadastrar tutor');
+      toast.error('Erro ao cadastrar tutor');
     }
   };
 

@@ -7,12 +7,11 @@ namespace PetshopPeterson.Models
     public class Servico
     {
         public int Id { get; set; }
-
         public string Descricao { get; set; } = string.Empty;
-
         public decimal Valor { get; set; }
-
         public int TutorId { get; set; }
+        public bool Ativo { get; set; } = true;
+
 
         [JsonIgnore]
         [ValidateNever]

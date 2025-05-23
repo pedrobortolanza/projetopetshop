@@ -42,27 +42,6 @@ namespace PetshopPeterson.Controllers
             return CreatedAtAction(nameof(GetTutor), new { id = tutor.Id }, tutor);
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] JsonElement dados)
-        {
-            var email = dados.GetProperty("email").GetString();
-            var senha = dados.GetProperty("senha").GetString();
-
-            var tutor = await _context.Tutor
-                .FirstOrDefaultAsync(t => t.email == email && t.senha == senha);
-
-            if (tutor == null) return Unauthorized();
-
-            return Ok(new
-            {
-                success = true,
-                message = "Login realizado com sucesso!",
-                email = tutor.email,
-                tipo = tutor.tipo,
-                id = tutor.Id
-            });
-        }
-
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] JsonElement dados)
         {

@@ -39,23 +39,21 @@ function Agendamento() {
 
     const dados = {
       nomePet,
-      data, // ex: "2025-05-18"
-      hora, // ex: "14:00"
+      data, 
+      hora, 
       agendamentoServico: selecionados
     };
 
-    console.log("Payload:", dados); // debug
-
     try {
       await axios.post('http://localhost:5294/api/agendamentos', dados);
-      alert('Agendamento realizado com sucesso!');
+      toast.sucess('Agendamento realizado com sucesso!');
       setSelecionados([]);
       setData('');
       setHora('');
       setNomePet('');
     } catch (err) {
       console.error("Erro ao agendar:", err);
-      alert('Erro ao agendar serviço.');
+      toast.error('Erro ao agendar serviço.');
     }
   };
 

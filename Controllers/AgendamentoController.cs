@@ -21,6 +21,7 @@ namespace PetshopPeterson.Controllers
         public async Task<IActionResult> GetAll()
         {
             var agendamentos = await _context.Agendamento
+                .Where(a => !a.Concluido)
                 .Include(a => a.AgendamentoServico)
                     .ThenInclude(asv => asv.Servico)
                         .ThenInclude(s => s.Tutor)
@@ -28,7 +29,6 @@ namespace PetshopPeterson.Controllers
 
             return Ok(agendamentos);
         }
-
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AgendamentoDTO dto)
         {
@@ -48,6 +48,33 @@ namespace PetshopPeterson.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetAll), new { id = agendamento.Id }, agendamento);
+        }
+        [HttpPut("{id}/concluir")]
+        public async Task<IActionResult> ConcluirAgendamento(int id)
+        {
+            var agendamento = await _context.Agendamento.FindAsync(id);
+            if (agendamento == null) return NotFound();
+
+            agendamento.Concluido = true;
+            await _context.SaveChangesAsync();
+
+            return Ok("Agendamento marcado como concluído.");
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAgendamento(int id)
+        {
+            var agendamento = await _context.Agendamento
+                .Include(a => a.AgendamentoServico)
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (agendamento == null)
+                return NotFound("Agendamento não encontrado.");
+
+            _context.AgendamentoServico.RemoveRange(agendamento.AgendamentoServico);
+            _context.Agendamento.Remove(agendamento);
+            await _context.SaveChangesAsync();
+
+            return Ok("Agendamento excluído com sucesso.");
         }
     }
 }

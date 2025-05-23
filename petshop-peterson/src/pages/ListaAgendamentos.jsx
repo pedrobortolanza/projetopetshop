@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function ListaAgendamentos() {
   const [agendamentos, setAgendamentos] = useState([]);
@@ -7,14 +8,33 @@ function ListaAgendamentos() {
   useEffect(() => {
     axios.get('http://localhost:5294/api/agendamentos')
       .then(res => {
-        console.log("Agendamentos recebidos:", res.data); // debug
         setAgendamentos(res.data);
       })
-      .catch(err => {
-        console.error("Erro ao buscar agendamentos:", err);
-        alert('Erro ao buscar agendamentos');
-      });
   }, []);
+
+  const concluirAgendamento = async (id) => {
+    try {
+      await axios.put(`http://localhost:5294/api/agendamentos/${id}/concluir`);
+      toast.success('Concluido com sucesso!');
+      window.location.reload();
+    } catch (err) {
+      toast.error('Erro ao concluir agendamento.');
+    }
+  };
+
+  
+const excluirAgendamento = async (id) => {
+  if (!window.confirm("Tem certeza que deseja excluir este agendamento?")) return;
+
+  try {
+    await axios.delete(`http://localhost:5294/api/agendamentos/${id}`);
+    toast.success("Agendamento excluído com sucesso!");
+    setAgendamentos(agendamentos.filter(ag => ag.id !== id));
+  } catch (err) {
+    toast.error("Erro ao excluir agendamento.");
+    console.error(err);
+  }
+};
 
   return (
     <div className="max-w-4xl mx-auto mt-10 bg-white p-6 rounded-xl shadow-md">
@@ -32,12 +52,21 @@ function ListaAgendamentos() {
             <ul className="ml-4 mt-2 list-disc text-gray-700">
               {ag.agendamentoServico?.map((s, idx) => (
                 <li key={idx}>
-                  {s.servico?.descricao ?? 'Serviço não encontrado'} — {s.quantidade}x
+                  {s.servico?.descricao ?? 'Serviço não existente'} — {s.quantidade}x
                   (R$ {s.servico?.valor?.toFixed(2) ?? '0.00'})
                   <br />
-                  <span className="text-sm text-gray-500">
-                    Tutor: {s.servico?.tutor?.nome ?? 'N/D'}
-                  </span>
+                  <button
+                    onClick={() => concluirAgendamento(ag.id)}
+                    className="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                  >
+                    Concluir
+                  </button>
+                  <button
+                    onClick={() => excluirAgendamento(ag.id)}
+                    className="ml-2 text-sm bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                  >
+                    Excluir
+                  </button>
                 </li>
               ))}
             </ul>

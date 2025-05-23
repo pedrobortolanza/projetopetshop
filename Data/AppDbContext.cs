@@ -39,13 +39,6 @@ namespace PetshopPeterson.Data
                 .HasForeignKey(s => s.TutorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Tutor removido de Agendamento
-            // modelBuilder.Entity<Agendamento>()
-            //     .HasOne(a => a.Tutor)
-            //     .WithMany(t => t.Agendamentos)
-            //     .HasForeignKey(a => a.TutorId)
-            //     .OnDelete(DeleteBehavior.Restrict);
-
             modelBuilder.Entity<Tutor>()
                 .HasOne(t => t.Logradouro)
                 .WithMany()

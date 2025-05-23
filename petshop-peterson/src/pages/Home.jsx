@@ -1,7 +1,7 @@
 function Home() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-red-50 px-4">
-      <div className="bg-white shadow-lg rounded-2xl p-10 max-w-2xl text-center border border-red-200">
+    <div className="h-screen flex items-center justify-center bg-red-50 px-4 overflow-hidden">
+      <div className="bg-white shadow-lg rounded-2xl p-10 w-full max-w-2xl text-center border border-red-200 overflow-auto">
         <h1 className="text-4xl font-extrabold text-red-600 mb-4">
           🐾 Bem-vindo ao Petshop Peterson!
         </h1>

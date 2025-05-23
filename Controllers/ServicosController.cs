@@ -21,7 +21,7 @@ namespace PetshopPeterson.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _context.Servico.ToListAsync());
+            return Ok(await _context.Servico.Where(s => s.Ativo).ToListAsync());
         }
 
         [HttpGet("{id}")]

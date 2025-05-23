@@ -9,8 +9,8 @@ function Header() {
         </h1>
         <nav className="space-x-4">
           <Link to="/" className="hover:underline">Início</Link>
-          <Link to="/api/servicos" className="hover:underline">Cadastrar Serviço</Link>
-          <Link to="/api/tutores" className="hover:underline">Cadastrar Tutor</Link>
+          <Link to="/api/servicos" className="hover:underline">Serviços</Link>
+          <Link to="/api/tutores" className="hover:underline">Tutores</Link>
           <Link to="/api/agendamentos/novo" className="hover:underline">Agendar Serviço</Link>
           <Link to="/api/agendamentos" className="hover:underline">Ver Agendamentos</Link>
         </nav>
