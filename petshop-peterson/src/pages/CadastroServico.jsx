@@ -77,8 +77,8 @@ function CadastroServico() {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 bg-white shadow-xl rounded-2xl p-10 border border-red-200">
-      <h1 className="text-3xl font-bold text-red-600 mb-6 text-center">
-        Petshop Peterson 🐾<br />
+      <h1 className="text-3xl font-bold text-cyan-600 mb-6 text-center">
+        Petshop Peterson 🐕<br />
         <span className="text-lg font-normal text-gray-600">{editandoId ? 'Editar Serviço' : 'Cadastro de Serviço'}</span>
       </h1>
 
@@ -128,8 +128,9 @@ function CadastroServico() {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full text-white font-bold py-3 px-4 rounded-lg transition duration-200 ${
-            loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-600 hover:bg-red-700'
+         
+          className={`w-full text-white font-bold py-3 px-4 rounded-xl border-2 shadow-md transition duration-200 ${
+          loading ? 'bg-gray-400 cursor-not-allowed border-gray-500' : 'bg-cyan-600 border-cyan-800'
           }`}
         >
           {loading ? 'Salvando...' : editandoId ? 'Atualizar Serviço' : 'Cadastrar Serviço'}
@@ -144,19 +145,19 @@ function CadastroServico() {
           {servicos.map((s) => (
             <li key={s.id} className="flex justify-between items-center bg-gray-100 p-3 rounded">
               <div>
-                <p className="font-semibold text-red-600">{s.descricao}</p>
+                <p className="font-semibold text-cyan-600">{s.descricao}</p>
                 <p className="text-sm text-gray-600">Valor: R$ {s.valor.toFixed(2)}</p>
               </div>
               <div className="flex gap-2">
                 <button
                   onClick={() => editarServico(s)}
-                  className="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded"
+                  className="bg-blue-500 text-white px-3 py-1 rounded-xl font-semibold border-2 border-blue-700 shadow-md"
                 >
                   Editar
                 </button>
                 <button
                   onClick={() => excluirServico(s.id)}
-                  className="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded"
+                  className="bg-red-500 text-white px-3 py-1 rounded-xl font-semibold border-2 border-red-700 shadow-md"
                 >
                   Excluir
                 </button>

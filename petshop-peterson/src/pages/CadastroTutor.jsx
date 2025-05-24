@@ -34,7 +34,7 @@ function CadastroTutor() {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
-      <h2 className="text-2xl font-bold mb-4 text-center text-red-600">Cadastro de Tutor</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center text-cyan-600">Cadastro de Tutor</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input value={nome} onChange={e => setNome(e.target.value)} required placeholder="Nome"
           className="w-full border px-3 py-2 rounded-lg" />
@@ -59,7 +59,8 @@ function CadastroTutor() {
         <input value={logradouro.complemento} onChange={e => setLogradouro({ ...logradouro, complemento: e.target.value })} placeholder="Complemento"
           className="w-full border px-3 py-2 rounded-lg" />
 
-        <button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-bold">
+        <button type="submit" className="w-full bg-cyan-600 text-white py-2 rounded-xl font-bold border-2 border-cyan-800 shadow-md"
+>
           Cadastrar Tutor
         </button>
       </form>

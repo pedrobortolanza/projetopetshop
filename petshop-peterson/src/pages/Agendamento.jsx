@@ -59,11 +59,11 @@ function Agendamento() {
 
   return (
     <div className="max-w-3xl mx-auto mt-10 bg-white shadow-md rounded-xl p-6">
-      <h2 className="text-2xl text-red-600 font-bold mb-6 text-center">Agendar Serviços</h2>
+      <h2 className="text-2xl text-cyan-600 font-bold mb-6 text-center">Agendar Serviços</h2>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label className="block font-medium text-gray-700 mb-1">🐾 Nome do Pet</label>
+          <label className="block font-medium text-gray-700 mb-1">🐕 Nome do Pet</label>
           <input
             type="text"
             value={nomePet}
@@ -121,7 +121,9 @@ function Agendamento() {
           ))}
         </div>
 
-        <button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg">
+        <button type="submit" className="w-full bg-cyan-600 text-white font-bold py-3 rounded-xl border-2 border-cyan-800 shadow-md"
+
+>
           Agendar
         </button>
       </form>
