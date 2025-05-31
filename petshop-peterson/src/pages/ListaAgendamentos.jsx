@@ -10,69 +10,77 @@ function ListaAgendamentos() {
       .then(res => {
         setAgendamentos(res.data);
       })
+      .catch(() => {
+        toast.error('Erro ao carregar agendamentos.');
+      });
   }, []);
 
   const concluirAgendamento = async (id) => {
     try {
       await axios.put(`http://localhost:5294/api/agendamentos/${id}/concluir`);
-      toast.success('Concluido com sucesso!');
-      window.location.reload();
+      toast.success('Concluído com sucesso! 🎉');
+      setAgendamentos(prev => prev.filter(ag => ag.id !== id));
     } catch (err) {
       toast.error('Erro ao concluir agendamento.');
     }
   };
 
-  
-const excluirAgendamento = async (id) => {
-  if (!window.confirm("Tem certeza que deseja excluir este agendamento?")) return;
+  const excluirAgendamento = async (id) => {
+    if (!window.confirm("Tem certeza que deseja excluir este agendamento?")) return;
 
-  try {
-    await axios.delete(`http://localhost:5294/api/agendamentos/${id}`);
-    toast.success("Agendamento excluído com sucesso!");
-    setAgendamentos(agendamentos.filter(ag => ag.id !== id));
-  } catch (err) {
-    toast.error("Erro ao excluir agendamento.");
-    console.error(err);
-  }
-};
+    try {
+      await axios.delete(`http://localhost:5294/api/agendamentos/${id}`);
+      toast.success("Agendamento excluído com sucesso!");
+      setAgendamentos(prev => prev.filter(ag => ag.id !== id));
+    } catch (err) {
+      toast.error("Erro ao excluir agendamento.");
+      console.error(err);
+    }
+  };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 bg-white p-6 rounded-xl shadow-md">
-      <h2 className="text-2xl font-bold text-center text-cyan-600 mb-6">Agendamentos Realizados</h2>
+    <div className="min-h-screen bg-gradient-to-r from-cyan-400 via-cyan-600 to-cyan-800 p-6 flex justify-center items-start">
+      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-6 mt-10">
+        <h2 className="text-3xl font-bold text-center text-cyan-700 mb-8">Agendamentos Realizados</h2>
 
-      {agendamentos.length === 0 ? (
-        <p className="text-center text-gray-500">Nenhum agendamento encontrado.</p>
-      ) : (
-        agendamentos.map((ag, index) => (
-          <div key={index} className="border-b py-4">
-            <h3 className="font-bold text-lg text-cyan-600">🐕 Pet: {ag.nomePet}</h3>
-            <p className="text-sm text-gray-600">
-              📅 {new Date(ag.data).toLocaleDateString()} às {ag.hora ?? '---'}
-            </p>
-            <ul className="ml-4 mt-2 list-disc text-gray-700">
-              {ag.agendamentoServico?.map((s, idx) => (
-                <li key={idx}>
-                  {s.servico?.descricao ?? 'Serviço não existente'} — {s.quantidade}x
-                  (R$ {s.servico?.valor?.toFixed(2) ?? '0.00'})
-                  <br />
-                  <button
-                    onClick={() => concluirAgendamento(ag.id)}
-                    className="text-sm bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
-                  >
-                    Concluir
-                  </button>
-                  <button
-                    onClick={() => excluirAgendamento(ag.id)}
-                    className="ml-2 text-sm bg-cyan-600 text-white px-3 py-1 rounded hover:bg-red-700"
-                  >
-                    Excluir
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
-      )}
+        {agendamentos.length === 0 ? (
+          <p className="text-center text-gray-500">Nenhum agendamento encontrado.</p>
+        ) : (
+          agendamentos.map((ag, index) => (
+            <div key={index} className="border-b border-gray-200 pb-5 mb-5 last:mb-0 last:border-b-0 text-center">
+              <h3 className="font-bold text-lg text-cyan-600 mb-1">🐕 Pet: {ag.nomePet}</h3>
+              <p className="text-sm text-gray-600 mb-3">
+                📅 {new Date(ag.data).toLocaleDateString()} às {ag.hora ?? '---'}
+              </p>
+
+              <ul className="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                {ag.agendamentoServico?.map((s, idx) => (
+                  <li key={idx}>
+                    <span className="font-semibold">
+                      {s.servico?.descricao ?? 'Serviço não existente'}
+                    </span> — {s.quantidade}x (R$ {s.servico?.valor?.toFixed(2) ?? '0.00'})
+                  </li>
+                ))}
+              </ul>
+
+              <div className="flex justify-center gap-4">
+                <button
+                  onClick={() => concluirAgendamento(ag.id)}
+                  className="bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white px-4 py-1 rounded-xl font-semibold transition duration-200"
+                >
+                  Concluir
+                </button>
+                <button
+                  onClick={() => excluirAgendamento(ag.id)}
+                  className="bg-gradient-to-r from-red-500 to-red-700 hover:from-red-600 hover:to-red-800 text-white px-4 py-1 rounded-xl font-semibold transition duration-200"
+                >
+                  Excluir
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }

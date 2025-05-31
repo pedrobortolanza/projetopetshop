@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function CadastroTutor() {
   const [nome, setNome] = useState('');
@@ -20,7 +21,7 @@ function CadastroTutor() {
 
       await axios.put(`http://localhost:5294/api/logradouros/${tutorRes.data.id}`, logradouro);
 
-      toast.sucess('Tutor cadastrado com sucesso!');
+      toast.success('Tutor cadastrado com sucesso! 🎉');
       setNome('');
       setEmail('');
       setSenha('');
@@ -33,37 +34,79 @@ function CadastroTutor() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-xl shadow-md">
-      <h2 className="text-2xl font-bold mb-4 text-center text-cyan-600">Cadastro de Tutor</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input value={nome} onChange={e => setNome(e.target.value)} required placeholder="Nome"
-          className="w-full border px-3 py-2 rounded-lg" />
-        <input value={email} onChange={e => setEmail(e.target.value)} required placeholder="Email"
-          className="w-full border px-3 py-2 rounded-lg" type="email" />
-        <input value={senha} onChange={e => setSenha(e.target.value)} required placeholder="Senha"
-          className="w-full border px-3 py-2 rounded-lg" type="password" />
-        <select value={tipo} onChange={e => setTipo(parseInt(e.target.value))}
-          className="w-full border px-3 py-2 rounded-lg">
-          <option value={0}>Cliente</option>
-          <option value={1}>Funcionário</option>
-        </select>
+      <div className="min-h-screen bg-gradient-to-r from-cyan-400 via-cyan-600 to-cyan-800 p-6 flex flex-col justify-center items-center">
+        <div className="w-full max-w-xl bg-white shadow-xl rounded-2xl p-6 sm:p-8">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-cyan-700">Cadastro de Tutor </h2>
+          <form onSubmit={handleSubmit} className="space-y-5">
+          <input
+            value={nome}
+            onChange={e => setNome(e.target.value)}
+            required
+            placeholder="Nome"
+            className="w-full border border-gray-300 px-4 py-2 rounded-lg"
+          />
+          <input
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+            placeholder="Email"
+            type="email"
+            className="w-full border border-gray-300 px-4 py-2 rounded-lg"
+          />
+          <input
+            value={senha}
+            onChange={e => setSenha(e.target.value)}
+            required
+            placeholder="Senha"
+            type="password"
+            className="w-full border border-gray-300 px-4 py-2 rounded-lg"
+          />
+          <select
+            value={tipo}
+            onChange={e => setTipo(parseInt(e.target.value))}
+            className="w-full border border-gray-300 px-4 py-2 rounded-lg"
+          >
+            <option value={0}>Cliente</option>
+            <option value={1}>Funcionário</option>
+          </select>
 
-        <hr className="my-4" />
-        <h3 className="text-lg font-semibold text-gray-600">Endereço</h3>
-        <input value={logradouro.cep} onChange={e => setLogradouro({ ...logradouro, cep: e.target.value })} required placeholder="CEP"
-          className="w-full border px-3 py-2 rounded-lg" />
-        <input value={logradouro.rua} onChange={e => setLogradouro({ ...logradouro, rua: e.target.value })} required placeholder="Rua"
-          className="w-full border px-3 py-2 rounded-lg" />
-        <input value={logradouro.numero} onChange={e => setLogradouro({ ...logradouro, numero: e.target.value })} required placeholder="Número"
-          className="w-full border px-3 py-2 rounded-lg" />
-        <input value={logradouro.complemento} onChange={e => setLogradouro({ ...logradouro, complemento: e.target.value })} placeholder="Complemento"
-          className="w-full border px-3 py-2 rounded-lg" />
+          <hr className="my-4" />
+          <input
+            value={logradouro.cep}
+            onChange={e => setLogradouro({ ...logradouro, cep: e.target.value })}
+            required
+            placeholder="CEP"
+            className="w-full border border-gray-300 px-4 py-2 rounded-lg"
+          />
+          <input
+            value={logradouro.rua}
+            onChange={e => setLogradouro({ ...logradouro, rua: e.target.value })}
+            required
+            placeholder="Rua"
+            className="w-full border border-gray-300 px-4 py-2 rounded-lg"
+          />
+          <input
+            value={logradouro.numero}
+            onChange={e => setLogradouro({ ...logradouro, numero: e.target.value })}
+            required
+            placeholder="Número"
+            className="w-full border border-gray-300 px-4 py-2 rounded-lg"
+          />
+          <input
+            value={logradouro.complemento}
+            onChange={e => setLogradouro({ ...logradouro, complemento: e.target.value })}
+            placeholder="Complemento"
+            className="w-full border border-gray-300 px-4 py-2 rounded-lg"
+          />
 
-        <button type="submit" className="w-full bg-cyan-600 text-white py-2 rounded-xl font-bold border-2 border-cyan-800 shadow-md"
->
-          Cadastrar Tutor
-        </button>
-      </form>
+          <button
+            type="submit"
+            className="w-full font-bold py-3 px-4 rounded-xl shadow-md text-white transition duration-200 bg-gradient-to-r from-cyan-500 to-cyan-700 hover:from-cyan-600 hover:to-cyan-800"
+          >
+            Cadastrar Tutor
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

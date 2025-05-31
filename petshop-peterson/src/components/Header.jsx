@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 function Header() {
   return (
-    <header className="bg-cyan-600 text-white shadow-md">
+<header className="bg-gradient-to-r from-cyan-800 to-cyan-600 text-white shadow-md animate-fade-in">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         <h1 className="text-xl font-bold tracking-wide">
           🐕 Petshop Peterson
