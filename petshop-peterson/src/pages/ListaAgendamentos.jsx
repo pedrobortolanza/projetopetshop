@@ -45,7 +45,7 @@ const excluirAgendamento = async (id) => {
       ) : (
         agendamentos.map((ag, index) => (
           <div key={index} className="border-b py-4">
-            <h3 className="font-bold text-lg text-red-500">🐕 Pet: {ag.nomePet}</h3>
+            <h3 className="font-bold text-lg text-cyan-600">🐕 Pet: {ag.nomePet}</h3>
             <p className="text-sm text-gray-600">
               📅 {new Date(ag.data).toLocaleDateString()} às {ag.hora ?? '---'}
             </p>
