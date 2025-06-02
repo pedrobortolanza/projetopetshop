@@ -52,6 +52,5 @@ Desenvolvido com foco em **facilidade de uso**, **design responsivo** e **organi
 - Cadastro de Serviço (`/cadastrar-servico`)
 - Agendar Serviço (`/agendar-servico`)
 - Listar Agendamentos (`/agendamentos`)
-- Login (estático)
 
 ---
